@@ -71,6 +71,23 @@ const navItems = [
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const baseDocsPath = React.useMemo(() => {
+    const match = pathname.match(/^(.*\/docs)(?:$|\/)/);
+    return match ? match[1] : "/api/swap-api/docs";
+  }, [pathname]);
+
+  const currentApi = React.useMemo(() => {
+    const m = pathname.match(/^\/api\/([^/]+)\//);
+    return m ? m[1] : "swap-api";
+  }, [pathname]);
+
+  const items = React.useMemo(() => {
+    if (currentApi === "token-screener-api") {
+      const allowed = new Set(["Introduction", "Overview", "Endpoints"]);
+      return navItems.filter((i) => allowed.has(i.label));
+    }
+    return navItems;
+  }, [currentApi]);
 
   // Close the sidebar when the route changes on mobile
   useEffect(() => {
@@ -127,15 +144,16 @@ export default function Sidebar() {
           </div>
 
           <ul className="space-y-1">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
+            {items.map((item) => {
+              const fullHref = `${baseDocsPath}${item.href.replace(/^\/docs/, "")}`;
+              const isActive = pathname === fullHref;
               const hasIds = item.ids && item.ids.length > 0;
 
               return (
                 <li key={item.href}>
                   <div className="flex flex-col">
                     <Link
-                      href={item.href}
+                      href={fullHref}
                       className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
                         isActive
                           ? "bg-green-100 text-green-700 font-medium border border-green-300"
