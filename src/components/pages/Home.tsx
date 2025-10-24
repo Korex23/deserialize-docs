@@ -52,8 +52,8 @@ export default function Home() {
         <h3 className="text-2xl font-bold mb-2 text-emerald-300">Deserialize</h3>
         <p className="text-emerald-100/80 mb-6">Powering decentralized swaps and token data.</p>
         <div className="flex justify-center gap-4 text-sm">
-          <Link className="hover:text-emerald-300 underline" href="/api/swap-api/docs/introduction">Docs</Link>
-          <Link className="hover:text-emerald-300 underline" href="/api/swap-api/docs/endpoints">API</Link>
+          <Link className="hover:text-emerald-300 underline" href="/api/token-screener-api/docs/introduction">Docs</Link>
+          <Link className="hover:text-emerald-300 underline" href="/api/token-screener-api/docs/endpoints">API</Link>
           <Link className="hover:text-emerald-300 underline" href="#">Support</Link>
           <Link className="hover:text-emerald-300 underline" href="#">Terms</Link>
         </div>

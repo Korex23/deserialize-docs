@@ -53,7 +53,26 @@ const navItems = [
       "get-token-list",
       "token-list-response",
       "get-token-list-details",
-      "token-list-details-response",
+      "token-list-details-response"
+    ],
+  },
+  {
+    href: "/docs/screening",
+    label: "Screening",
+    ids: [
+      "screening-trending",
+      "screening-gainers",
+      "screening-losers",
+      "screening-high-liquidity",
+      "screening-new"
+    ],
+  },
+  {
+    href: "/docs/pools",
+    label: "Pools",
+    ids: [
+      "pools-list",
+      "pool-details"
     ],
   },
   {
@@ -73,7 +92,10 @@ export default function Sidebar() {
   const pathname = usePathname();
   const baseDocsPath = React.useMemo(() => {
     const match = pathname.match(/^(.*\/docs)(?:$|\/)/);
-    return match ? match[1] : "/api/swap-api/docs";
+    if (match) return match[1];
+    const m = pathname.match(/^\/api\/([^/]+)\//);
+    const api = m ? m[1] : "swap-api";
+    return `/api/${api}/docs`;
   }, [pathname]);
 
   const currentApi = React.useMemo(() => {
@@ -83,8 +105,12 @@ export default function Sidebar() {
 
   const items = React.useMemo(() => {
     if (currentApi === "token-screener-api") {
-      const allowed = new Set(["Introduction", "Overview", "Endpoints"]);
-      return navItems.filter((i) => allowed.has(i.label));
+      const allowed = new Set(["Introduction", "Overview", "Endpoints", "Token List", "Screening", "Pools"]);
+      return navItems
+        .filter((i) => allowed.has(i.label))
+        .map((i) =>
+          i.label === "Overview" ? { ...i, ids: ["tokens", "token-details"] } : i
+        );
     }
     return navItems;
   }, [currentApi]);
@@ -121,13 +147,10 @@ export default function Sidebar() {
       )}
 
       <nav
-        className={`fixed top-0 left-0 h-full w-64 flex-shrink-0 transform transition-transform duration-300 ease-in-out md:z-40 z-50
-                   md:sticky md:top-24 md:h-fit md:transform-none
-                   ${
-                     isOpen
-                       ? "translate-x-0"
-                       : "-translate-x-full md:translate-x-0"
-                   }`}
+        className={`transition-transform duration-300 ease-in-out flex-shrink-0
+                    ${isOpen
+                      ? "fixed top-0 left-0 h-full w-64 z-50 translate-x-0 md:sticky md:top-24 md:h-fit"
+                      : "hidden md:block md:sticky md:top-24 md:h-fit"}`}
       >
         <div className="bg-gradient-to-b from-green-50 to-white rounded-r-lg md:rounded-lg border-r border-t border-b border-green-200 h-full p-4 flex flex-col overflow-y-auto">
           <div className="flex justify-between items-center mb-3 md:block">
@@ -162,11 +185,7 @@ export default function Sidebar() {
                     >
                       <ChevronRight
                         size={16}
-                        className={
-                          isActive
-                            ? "opacity-100"
-                            : "opacity-0 transition-opacity"
-                        }
+                        className={isActive ? "opacity-100" : "opacity-0 transition-opacity"}
                       />
                       {item.label}
                     </Link>

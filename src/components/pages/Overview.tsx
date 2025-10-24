@@ -26,7 +26,7 @@ export default function SwapAPIDocumentation() {
         <div className="bg-green-50 border-l-4 border-green-400 p-4 my-6 rounded">
           <h4 className="font-semibold text-green-700 mb-2">Base URL</h4>
           <code className="text-green-800">
-            https://evm-api.deserialize.xyz
+            https://screener.deserialize.xyz
           </code>
         </div>
       </Section>
@@ -293,7 +293,7 @@ export default function SwapAPIDocumentation() {
         <div></div>
         <div>
           <Link
-            href={"/docs/endpoints"}
+            href={"../endpoints"}
             className="flex items-center justify-between px-4 py-3 bg-green-100 hover:bg-green-200 border border-green-300 rounded-md transition-colors group"
           >
             <div className="flex flex-col">
