@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { ChevronRight, ChevronDown, Menu, X } from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
+import { Menu, X, ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const navItems = [
+const baseNavItems = [
   {
     href: "/docs/introduction",
     label: "Introduction",
@@ -14,38 +14,9 @@ const navItems = [
   {
     href: "/docs/overview",
     label: "Overview",
-    ids: [
-      "overview",
-      "quote",
-      "swap",
-      "tokens",
-      "token-details",
-      "token-price",
-    ],
+    ids: ["overview", "tokens", "token-details"],
   },
   { href: "/docs/endpoints", label: "Endpoints" },
-  {
-    href: "/docs/quote",
-    label: "Get Quote",
-    ids: [
-      "endpoints",
-      "request-body",
-      "request-parameters",
-      "response",
-      "response-fields",
-    ],
-  },
-  {
-    href: "/docs/swap",
-    label: "Execute Swap",
-    ids: [
-      "endpoints",
-      "request-body",
-      "request-parameters",
-      "response",
-      "response-fields",
-    ],
-  },
   {
     href: "/docs/tokens",
     label: "Token List",
@@ -53,7 +24,7 @@ const navItems = [
       "get-token-list",
       "token-list-response",
       "get-token-list-details",
-      "token-list-details-response"
+      "token-list-details-response",
     ],
   },
   {
@@ -64,16 +35,23 @@ const navItems = [
       "screening-gainers",
       "screening-losers",
       "screening-high-liquidity",
-      "screening-new"
+      "screening-new",
     ],
   },
   {
     href: "/docs/pools",
     label: "Pools",
-    ids: [
-      "pools-list",
-      "pool-details"
-    ],
+    ids: ["pools-list", "pool-details"],
+  },
+  {
+    href: "/docs/quote",
+    label: "Get Quote",
+    ids: ["endpoints", "request-body", "request-parameters", "response"],
+  },
+  {
+    href: "/docs/swap",
+    label: "Execute Swap",
+    ids: ["endpoints", "request-body", "request-parameters", "response"],
   },
   {
     href: "/docs/token-details",
@@ -88,46 +66,50 @@ const navItems = [
 ];
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const baseDocsPath = React.useMemo(() => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const currentApi = useMemo(() => {
+    const match = pathname.match(/^\/api\/([^/]+)\//);
+    return match ? match[1] : "swap-api";
+  }, [pathname]);
+
+  const baseDocsPath = useMemo(() => {
     const match = pathname.match(/^(.*\/docs)(?:$|\/)/);
     if (match) return match[1];
-    const m = pathname.match(/^\/api\/([^/]+)\//);
-    const api = m ? m[1] : "swap-api";
-    return `/api/${api}/docs`;
-  }, [pathname]);
+    return `/api/${currentApi}/docs`;
+  }, [pathname, currentApi]);
 
-  const currentApi = React.useMemo(() => {
-    const m = pathname.match(/^\/api\/([^/]+)\//);
-    return m ? m[1] : "swap-api";
-  }, [pathname]);
-
-  const items = React.useMemo(() => {
-    if (currentApi === "token-screener-api") {
-      const allowed = new Set(["Introduction", "Overview", "Endpoints", "Token List", "Screening", "Pools"]);
-      return navItems
-        .filter((i) => allowed.has(i.label))
-        .map((i) =>
-          i.label === "Overview" ? { ...i, ids: ["tokens", "token-details"] } : i
-        );
+  const items = useMemo(() => {
+    if (currentApi === "swap-api") {
+      return baseNavItems.filter(
+        (item) => item.label !== "Screening" && item.label !== "Pools"
+      );
     }
-    return navItems;
+
+    if (currentApi === "token-screener-api") {
+      const allowed = new Set([
+        "Introduction",
+        "Overview",
+        "Endpoints",
+        "Token List",
+        "Screening",
+        "Pools",
+      ]);
+      return baseNavItems.filter((item) => allowed.has(item.label));
+    }
+
+    return baseNavItems;
   }, [currentApi]);
 
-  // Close the sidebar when the route changes on mobile
   useEffect(() => {
-    if (isOpen) {
-      setIsOpen(false);
-    }
+    if (isOpen) setIsOpen(false);
   }, [pathname]);
 
-  const scrollToId = (id: string): void => {
-    const element: HTMLElement | null = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  function scrollToId(id: string) {
+    const element = document.getElementById(id);
+    if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
     <>
@@ -141,75 +123,71 @@ export default function Sidebar() {
 
       {isOpen && (
         <div
+          className="md:hidden fixed inset-0 bg-black/40 z-40"
           onClick={() => setIsOpen(false)}
-          className="md:hidden fixed inset-0 bg-black/40 z-40 transition-opacity"
         />
       )}
 
       <nav
-        className={`transition-transform duration-300 ease-in-out flex-shrink-0
-                    ${isOpen
-                      ? "fixed top-0 left-0 h-full w-64 z-50 translate-x-0 md:sticky md:top-24 md:h-fit"
-                      : "hidden md:block md:sticky md:top-24 md:h-fit"}`}
+        className={`${
+          isOpen
+            ? "fixed top-0 left-0 h-full w-64 z-50 translate-x-0"
+            : "hidden md:block md:sticky md:top-24"
+        } bg-gradient-to-b from-green-50 to-white rounded-r-lg md:rounded-lg border-r border-t border-b border-green-200 p-4 overflow-y-auto transition-transform duration-300`}
       >
-        <div className="bg-gradient-to-b from-green-50 to-white rounded-r-lg md:rounded-lg border-r border-t border-b border-green-200 h-full p-4 flex flex-col overflow-y-auto">
-          <div className="flex justify-between items-center mb-3 md:block">
-            <h3 className="text-sm font-semibold text-green-700 uppercase">
-              Contents
-            </h3>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="md:hidden p-1"
-              aria-label="Close navigation"
-            >
-              <X className="h-5 w-5 text-green-600" />
-            </button>
-          </div>
-
-          <ul className="space-y-1">
-            {items.map((item) => {
-              const fullHref = `${baseDocsPath}${item.href.replace(/^\/docs/, "")}`;
-              const isActive = pathname === fullHref;
-              const hasIds = item.ids && item.ids.length > 0;
-
-              return (
-                <li key={item.href}>
-                  <div className="flex flex-col">
-                    <Link
-                      href={fullHref}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-                        isActive
-                          ? "bg-green-100 text-green-700 font-medium border border-green-300"
-                          : "text-gray-700 hover:bg-green-50"
-                      }`}
-                    >
-                      <ChevronRight
-                        size={16}
-                        className={isActive ? "opacity-100" : "opacity-0 transition-opacity"}
-                      />
-                      {item.label}
-                    </Link>
-
-                    {hasIds && isActive && (
-                      <ul className="ml-10 mt-1 space-y-1 border-l border-green-200 pl-3">
-                        {item.ids.map((id) => (
-                          <li key={id}>
-                            <button
-                              onClick={() => scrollToId(id)}
-                              className="text-xs text-gray-600 hover:text-green-700 transition-colors py-1 text-left w-full capitalize"
-                            >
-                              {id.replace(/-/g, " ")}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+        <div className="flex justify-between items-center mb-3 md:block">
+          <h3 className="text-sm font-semibold text-green-700 uppercase">
+            Contents
+          </h3>
+          <button onClick={() => setIsOpen(false)} className="md:hidden p-1">
+            <X className="h-5 w-5 text-green-600" />
+          </button>
         </div>
+
+        <ul className="space-y-1">
+          {items.map((item) => {
+            const fullHref = `${baseDocsPath}${item.href.replace(
+              /^\/docs/,
+              ""
+            )}`;
+            const isActive = pathname === fullHref;
+            const hasIds = item.ids && item.ids.length > 0;
+
+            return (
+              <li key={item.href}>
+                <Link
+                  href={fullHref}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${
+                    isActive
+                      ? "bg-green-100 text-green-700 font-medium border border-green-300"
+                      : "text-gray-700 hover:bg-green-50"
+                  }`}
+                >
+                  <ChevronRight
+                    size={16}
+                    className={isActive ? "opacity-100" : "opacity-0"}
+                  />
+                  {item.label}
+                </Link>
+
+                {isActive && hasIds && (
+                  <ul className="ml-10 mt-1 space-y-1 border-l border-green-200 pl-3">
+                    {item.ids.map((id) => (
+                      <li key={id}>
+                        <button
+                          onClick={() => scrollToId(id)}
+                          className="text-xs text-gray-600 hover:text-green-700 w-full text-left capitalize"
+                        >
+                          {id.replace(/-/g, " ")}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
+        </ul>
       </nav>
     </>
   );
