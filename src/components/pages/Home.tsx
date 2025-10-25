@@ -7,13 +7,12 @@ export default function Home() {
     <main className="min-h-[calc(100vh-36px)] bg-white text-gray-900">
       <section className="max-w-5xl mx-auto px-6 py-16 text-center">
         <h1 className="text-3xl md:text-7xl font-extrabold tracking-tight text-emerald-600">
-          Deserialize Documentation
+          Deserialize Docs
         </h1>
 
         <p className="mt-6 text-gray-700 text-sm md:text-lg max-w-2xl mx-auto">
-          Robust SDKs and REST APIs for secure swaps and intelligent token
-          screening on Eclipse. Designed for performance, reliability, and ease
-          of integration.
+          REST APIs for secure swaps and intelligent token screening on 0G.
+          Designed for performance, reliability, and ease of integration.
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-4">
