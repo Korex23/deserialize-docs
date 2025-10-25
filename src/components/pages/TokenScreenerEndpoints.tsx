@@ -86,100 +86,91 @@ const TokenScreenerEndpoints: React.FC = () => {
   return (
     <>
       <Section id="endpoints" title="Token Screener API Endpoints">
-        <p className="text-green-800 mb-4">
-          Base URL: <code className="font-mono">https://screener.deserialize.xyz</code>
-        </p>
         <div className="space-y-2">
-          <Endpoint method="GET" path="/tokens" description="List tokens with market data" />
-          <Endpoint method="GET" path="/tokens/:tokenAddress" description="Get token details and pools by address" />
+          <Endpoint
+            method="GET"
+            path="/health"
+            description="Check system health status"
+          />
+          <Endpoint
+            method="GET"
+            path="/stats"
+            description="Get system statistics"
+          />
+          <Endpoint
+            method="GET"
+            path="/last-update"
+            description="Get timestamp of last data update"
+          />
+
+          <Endpoint
+            method="GET"
+            path="/tokens"
+            description="List tokens with market data"
+          />
+          <Endpoint
+            method="GET"
+            path="/tokens/:tokenAddress"
+            description="Get token details and pools by address"
+          />
+          <Endpoint
+            method="GET"
+            path="/tokens/search/:query"
+            description="Search tokens by query"
+          />
+
+          <Endpoint
+            method="GET"
+            path="/screening/trending"
+            description="Get trending tokens"
+          />
+          <Endpoint
+            method="GET"
+            path="/screening/gainers"
+            description="Get top gaining tokens"
+          />
+          <Endpoint
+            method="GET"
+            path="/screening/losers"
+            description="Get top losing tokens"
+          />
+          <Endpoint
+            method="GET"
+            path="/screening/high-liquidity"
+            description="Get tokens with high liquidity"
+          />
+          <Endpoint
+            method="GET"
+            path="/screening/new"
+            description="Get newly listed tokens"
+          />
+
+          <Endpoint method="GET" path="/pools" description="List all pools" />
+          <Endpoint
+            method="GET"
+            path="/pools/:poolAddress"
+            description="Get pool details by address"
+          />
         </div>
-        <div className="mt-4 text-sm text-green-700">
-          <p>
-            Try it:
-            {" "}
-            <Link className="underline" href="https://screener.deserialize.xyz/tokens" target="_blank">
-              https://screener.deserialize.xyz/tokens
-            </Link>
-            {" "}
-            and
-            {" "}
-            <Link className="underline" href="https://screener.deserialize.xyz/tokens/0x59e6ff3943bbdfe2fb19565037ac85071223e94c" target="_blank">
-              /tokens/:tokenAddress
-            </Link>
-          </p>
-        </div>
       </Section>
 
-      <Section id="request-examples" title="Request Examples">
-        <h4 className="font-semibold text-green-800 mb-2">Fetch (browser/node)</h4>
-        <CodeBlock
-          language="ts"
-          index="fetch-list"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={`const res = await fetch('https://screener.deserialize.xyz/tokens');
-const json = await res.json();
-console.log(json);`}
-        />
-        <CodeBlock
-          language="ts"
-          index="fetch-details"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={`const address = '0x59e6ff3943bbdfe2fb19565037ac85071223e94c';
-const res = await fetch('https://screener.deserialize.xyz/tokens/' + address);
-const json = await res.json();
-console.log(json);`}
-        />
-
-        <h4 className="font-semibold text-green-800 mt-6 mb-2">cURL</h4>
-        <CodeBlock
-          language="bash"
-          index="curl-list"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={`curl -s https://screener.deserialize.xyz/tokens | jq '.'`}
-        />
-        <CodeBlock
-          language="bash"
-          index="curl-details"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={`curl -s https://screener.deserialize.xyz/tokens/0x59e6ff3943bbdfe2fb19565037ac85071223e94c | jq '.'`}
-        />
-      </Section>
-
-      <Section id="responses" title="Response Examples">
-        <h4 className="font-semibold text-green-800 mb-2">List Tokens (200)</h4>
-        <CodeBlock
-          language="json"
-          index="json-list"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={sampleListResponse}
-        />
-
-        <h4 className="font-semibold text-green-800 mt-6 mb-2">Token Details (200)</h4>
-        <CodeBlock
-          language="json"
-          index="json-details"
-          copiedIndex={copiedIndex}
-          copyToClipboard={copyToClipboard}
-          code={sampleDetailsResponse}
-        />
-      </Section>
-
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
           <Link
-            href={"../overview"}
+            href={"/api/token-screener-api/docs/overview"}
             className="flex items-center justify-between px-4 py-3 bg-green-100 hover:bg-green-200 border border-green-300 rounded-md transition-colors group"
           >
             <div className="flex flex-col">
-              <span className="text-xs text-green-600 uppercase font-semibold">Previous</span>
-              <span className="text-sm text-green-800 font-medium">Overview</span>
+              <span className="text-xs text-green-600 uppercase font-semibold">
+                Previous
+              </span>
+              <span className="text-sm text-green-800 font-medium">
+                Overview
+              </span>
             </div>
-            <span className="text-green-700 group-hover:translate-x-1 transition-transform">→</span>
+            <span className="text-green-700 group-hover:-translate-x-1 transition-transform">
+              ←
+            </span>
           </Link>
         </div>
         <div />

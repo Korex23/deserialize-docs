@@ -18,8 +18,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   copiedIndex,
   copyToClipboard,
 }) => (
-  <div className="relative bg-green-50 rounded-lg overflow-hidden my-4 border border-green-200">
-    <div className="flex items-center justify-between px-4 py-2 bg-green-100 border-b border-green-200">
+  <div className="relative bg-green-50 rounded-lg md:rounded-lg overflow-hidden my-4 border border-green-200 w-full max-w-full">
+    <div className="flex items-center justify-between px-3 sm:px-4 py-2 bg-green-100 border-b border-green-200">
       <span className="text-xs text-green-700 uppercase">{language}</span>
       <button
         onClick={() => copyToClipboard(code, index)}
@@ -38,8 +38,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         )}
       </button>
     </div>
-    <pre className="p-4 overflow-x-auto text-sm">
-      <code className="text-green-900">{code}</code>
+    <pre className="p-3 sm:p-4 overflow-x-auto overflow-y-auto text-xs sm:text-sm max-h-[60vh] w-full">
+      <code className="text-green-900 block min-w-full">{code}</code>
     </pre>
   </div>
 );

@@ -1,5 +1,5 @@
-import IntroductionPage from "@/components/pages/Introduction";
+import TokenScreenerIntroduction from "@/components/pages/TokenScreenerIntroduction";
 
 export default function Home() {
-  return <IntroductionPage />;
+  return <TokenScreenerIntroduction />;
 }

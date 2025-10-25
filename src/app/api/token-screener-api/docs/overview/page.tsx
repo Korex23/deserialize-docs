@@ -1,5 +1,5 @@
-import OverviewPage from "@/components/pages/Overview";
+import TokenScreenerOverview from "@/components/pages/TokenScreenerOverview";
 
 export default function Home() {
-  return <OverviewPage />;
+  return <TokenScreenerOverview />;
 }
