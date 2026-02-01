@@ -26,9 +26,20 @@ export default function SwapAPIDocumentation() {
         <div className="bg-green-50 border-l-4 border-green-400 p-4 my-6 rounded">
           <h4 className="font-semibold text-green-700 mb-2">Base URL</h4>
           <code className="text-green-800">
-            https://screener.deserialize.xyz
+            https://evm-api.deserialize.xyz/:networkId
           </code>
         </div>
+      </Section>
+
+      <Section id="networks" title="Supported Networks">
+        <p className="text-gray-700 mb-4">
+          The Deserialize API currently supports the following networks:
+        </p>
+
+        <ul className="list-disc list-inside text-gray-700">
+          <li>0G Mainnet (networkId: 0G)</li>
+          <li>Base (networkId: BASE)</li>
+        </ul>
       </Section>
 
       <Section id="quote" title="Get Quote">

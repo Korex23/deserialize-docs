@@ -14,7 +14,7 @@ const baseNavItems = [
   {
     href: "/docs/overview",
     label: "Overview",
-    ids: ["overview", "tokens", "token-details"],
+    ids: ["overview", "networks", "tokens", "token-details"],
   },
   { href: "/docs/endpoints", label: "Endpoints" },
   {
@@ -83,7 +83,7 @@ export default function Sidebar() {
   const items = useMemo(() => {
     if (currentApi === "swap-api") {
       return baseNavItems.filter(
-        (item) => item.label !== "Screening" && item.label !== "Pools"
+        (item) => item.label !== "Screening" && item.label !== "Pools",
       );
     }
 
@@ -148,7 +148,7 @@ export default function Sidebar() {
           {items.map((item) => {
             const fullHref = `${baseDocsPath}${item.href.replace(
               /^\/docs/,
-              ""
+              "",
             )}`;
             const isActive = pathname === fullHref;
             const hasIds = item.ids && item.ids.length > 0;

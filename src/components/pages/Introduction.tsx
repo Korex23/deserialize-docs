@@ -35,7 +35,7 @@ export default function IntroductionPage() {
         <div className="bg-green-50 border-l-4 border-green-400 p-4 my-6 rounded">
           <h4 className="font-semibold text-green-700 mb-2">Base URL</h4>
           <code className="text-green-800">
-            https://evm-api.deserialize.xyz
+            https://evm-api.deserialize.xyz/:networkId
           </code>
         </div>
 
